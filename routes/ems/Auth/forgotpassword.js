@@ -14,11 +14,21 @@ const emailTemplatePath = path.join(
 const emailTemplate = fs.readFileSync(emailTemplatePath, "utf8");
 
 // Configure the Nodemailer transporter
+// const transporter = nodemailer.createTransport({
+//   service: "gmail",
+//   auth: {
+//     user: process.env.SENDING_EMAIL, // Your Gmail email address
+//     pass: process.env.EMAIL_PASSWORD, // Your Gmail password or an app-specific password
+//   },
+// });
+
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "naveenportfolio.site", // Replace with your SMTP server address
+  port: 465, // Replace with your SMTP server port (usually 587 for TLS)
+  secure: true, // Set to true for TLS, false for non-secure
   auth: {
-    user: process.env.SENDING_EMAIL, // Your Gmail email address
-    pass: process.env.EMAIL_PASSWORD, // Your Gmail password or an app-specific password
+    user: process.env.SENDING_EMAIL, // Your email address
+    pass: process.env.EMAIL_PASSWORD, // Your email password
   },
 });
 
