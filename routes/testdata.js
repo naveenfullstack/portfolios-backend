@@ -10,6 +10,7 @@ const sampleData = {
       adult: false,
       backdrop_path: "/jZIYaISP3GBSrVOPfrp98AMa8Ng.jpg",
       genre_ids: [16, 35, 10751, 14, 10749],
+      genre_idss: [16, 35, 10751, 14, 10749],
       id: 976573,
       original_language: "en",
       original_title: "Elemental",
