@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const nodemailer = require("nodemailer"); // Import Nodemailer
+const nodemailer = require("nodemailer");
 const User = require("../../../models/ems/user");
 const fs = require("fs");
 const path = require("path");
@@ -14,23 +14,14 @@ const emailTemplatePath = path.join(
 const emailTemplate = fs.readFileSync(emailTemplatePath, "utf8");
 
 // Configure the Nodemailer transporter
-// const transporter = nodemailer.createTransport({
-//   service: "gmail",
-//   auth: {
-//     user: process.env.SENDING_EMAIL, // Your Gmail email address
-//     pass: process.env.EMAIL_PASSWORD, // Your Gmail password or an app-specific password
-//   },
-// });
-
 const transporter = nodemailer.createTransport({
-  host: "naveenportfolio.site", // Replace with your SMTP server address
-  port: 465, // Replace with your SMTP server port (usually 587 for TLS)
-  secure: true, // Set to true for TLS, false for non-secure
+  service: "gmail",
   auth: {
-    user: process.env.SENDING_EMAIL, // Your email address
-    pass: process.env.EMAIL_PASSWORD, // Your email password
+    user: process.env.SENDING_EMAIL, // Your Gmail email address
+    pass: process.env.EMAIL_PASSWORD, // Your Gmail password or an app-specific password
   },
 });
+
 
 // Define ANSI escape codes for green text color
 const greenColor = "\x1b[32m";
@@ -71,8 +62,8 @@ router.post("/forgotpassword", async (req, res) => {
     // Create the password reset email
     const resetEmail = {
       from: {
-        name: process.env.COMPANY_NAME, // Sender's name
-        address: process.env.SENDING_EMAIL, // Sender's email address
+        name: process.env.EMS_COMPANY_NAME, // Sender's name
+        address: process.env.EMS_SENDING_EMAIL, // Sender's email address
       },
       to: user.email, // Recipient's email address
       subject: "Reset your password",
@@ -87,7 +78,7 @@ router.post("/forgotpassword", async (req, res) => {
       } else {
         const currentTime = new Date(); // Get the current timestamp
         console.log(
-          `${resetColor} Email sent at${greenColor} ${currentTime}:${resetColor} ${info.response}`
+          `${resetColor}Email sent at${greenColor} ${currentTime}:${resetColor} ${info.response}`
         );
         res.status(200).json({ message: "Email has been sent to your email" });
       }

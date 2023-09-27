@@ -3,13 +3,13 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
-const User = require("../../../models/mediax/user");
+const User = require("../../../models/portfolio/user");
 const fs = require("fs");
 const path = require("path");
 
 const emailTemplatePath = path.join(
   __dirname,
-  "../../../emails/mediax/PasswordReset.html"
+  "../../../emails/ems/passwordreset.html"
 );
 const emailTemplate = fs.readFileSync(emailTemplatePath, "utf8");
 
@@ -21,6 +21,7 @@ const transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_PASSWORD, // Your Gmail password or an app-specific password
   },
 });
+
 
 // Define ANSI escape codes for green text color
 const greenColor = "\x1b[32m";
@@ -50,20 +51,19 @@ router.post("/forgotpassword", async (req, res) => {
     await user.save();
 
     // Replace placeholders in the email template
-    const resetLink = `${process.env.MEDIAX_BASE_DOMAIN}/reset-password/${resetToken}`;
+    const resetLink = `${process.env.BASE_DOMAIN}/reset-password/${resetToken}`;
     const emailContent = emailTemplate
-    .replace("{{firstName}}", firstName)
-    .replace("{{lastName}}", lastName)
-    .replace("{{resetLink}}", resetLink)
-    .replace("{{resetLinkms}}", resetLink)
-    .replace("{{resetToken}}", resetToken)
-    .replace("{{resetTokenUrl}}", resetToken);
+      .replace("{{firstName}}", firstName)
+      .replace("{{lastName}}", lastName)
+      .replace("{{resetLink}}", resetLink)
+      .replace("{{resetToken}}", resetToken)
+      .replace("{{resetTokenUrl}}", resetToken);
 
     // Create the password reset email
     const resetEmail = {
       from: {
-        name: process.env.MEDIAX_COMPANY_NAME, // Sender's name
-        address: process.env.SENDING_EMAIL, // Sender's email address
+        name: process.env.EMS_COMPANY_NAME, // Sender's name
+        address: process.env.EMS_SENDING_EMAIL, // Sender's email address
       },
       to: user.email, // Recipient's email address
       subject: "Reset your password",
