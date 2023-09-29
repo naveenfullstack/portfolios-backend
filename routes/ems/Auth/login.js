@@ -37,7 +37,7 @@ router.post("/", async (req, res, next) => {
       user.failedLoginAttempts += 1;
       await user.save();
 
-      return res.status(401).json({ error: "Invalid password" });
+      return res.status(401).json({ error: "Invalid username or password" });
     }
 
     // Generate an access token with a short expiration time

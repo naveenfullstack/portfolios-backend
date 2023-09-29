@@ -2,13 +2,13 @@ const mongoose = require('mongoose');
 const emsDb = require("../../databases/emsDb");
 
 const userSchema = new mongoose.Schema({
-  firstname: {type: String, required: true},
-  lastname: {type: String, required: true},
-  image: {type: String, required: true},
-  companyName: {type: String, required: true},
-  username: { type: String, required: true },
+  firstname: {type: String},
+  lastname: {type: String},
+  profileImage: {type: String},
+  companyName: {type: String},
+  username: { type: String},
   email: { type: String, required: true },
-  password: { type: String, required: true },
+  password: { type: String},
   oldpassword: { type: String},
   resetToken: {type: String},
   accessToken: {type: String},

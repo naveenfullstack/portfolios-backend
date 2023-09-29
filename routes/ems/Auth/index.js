@@ -14,4 +14,7 @@ router.use('/', ForgotPassword);
 const SignUp = require('./signup.js');
 router.use('/signup', SignUp);
 
+const Upload = require('./uploadProfileImage.js');
+router.use('/', Upload);
+
 module.exports = router;

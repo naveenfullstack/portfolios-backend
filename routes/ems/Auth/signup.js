@@ -6,7 +6,7 @@ const User = require("../../../models/ems/user");
 
 router.post("/", async (req, res) => {
   try {
-    const { firstname, lastname, username, email, password } = req.body;
+    const { firstname, lastname, companyName, username, email, password } = req.body;
 
     // Check if the email is already taken
     const existingEmail = await User.findOne({ email });
@@ -24,7 +24,7 @@ router.post("/", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create a new user with the encrypted password
-    const newUser = new User({ firstname, lastname, email, username, password: hashedPassword , is_blocked : false , oldpassword : "" });
+    const newUser = new User({ firstname, lastname, companyName, email, username, password: hashedPassword , is_blocked : false , oldpassword : ""});
     await newUser.save();
 
     // Generate a JWT token for the user
