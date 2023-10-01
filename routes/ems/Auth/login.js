@@ -17,12 +17,10 @@ router.post("/", async (req, res, next) => {
 
     // Check if the account is blocked
     if (user.is_blocked) {
-      return res
-        .status(401)
-        .json({
-          error:
-            "Your account has been blocked. Please contact support for assistance.",
-        });
+      return res.status(401).json({
+        error:
+          "Your account has been blocked. Please contact support for assistance.",
+      });
     }
 
     if (await bcrypt.compare(password, user.oldpassword)) {
@@ -66,15 +64,20 @@ router.post("/", async (req, res, next) => {
     user.lastLogin = new Date();
     await user.save();
 
-    res
-      .status(200)
-      .json({
-        success: "true",
-        message: "Login Success",
-        email,
-        accessToken,
-        refreshToken,
-      });
+    res.status(200).json({
+      success: "true",
+      message: "Login Success",
+      email: user.email,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      profileImage: user.profileImage,
+      companyName: user.companyName,
+      permission: user.permission,
+      is_blocked: user.is_blocked,
+      is_paid: user.is_paid,
+      accessToken,
+      refreshToken,
+    });
 
     next();
   } catch (error) {
