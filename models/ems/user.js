@@ -15,6 +15,8 @@ const userSchema = new mongoose.Schema({
   refreshToken: {type: String},
   lastLogin: {type: Date},
   failedLoginAttempts: {type: String},
+  position: { type: String},
+  department: { type: String},
   permission: { type: [String] },
   emplyees: { type: [String] },
   projects: { type: [String] },
