@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
   failedLoginAttempts: {type: String},
   position: { type: String},
   department: { type: String},
-  permission: { type: String },
+  permission: { type: [String] },
   emplyees: { type: [String] },
   projects: { type: [String] },
   announcements: { type: [String] },
