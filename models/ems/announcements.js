@@ -8,6 +8,7 @@ const AnnouncementsSchema = new mongoose.Schema({
   PublisherFirstName: {type: String},
   PublisherLastName: {type: String},
   Publisherid: {type: String},
+  companyId: {type: String},
   PublisherPosition: {type: String},
   PublisherDepartment: {type: String},
   PublisherProfileImage: {type: String},

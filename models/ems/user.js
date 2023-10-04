@@ -6,6 +6,7 @@ const userSchema = new mongoose.Schema({
   lastname: {type: String},
   profileImage: {type: String},
   companyName: {type: String},
+  companyId: {type: String},
   username: { type: String},
   email: { type: String, required: true },
   password: { type: String},
@@ -25,6 +26,7 @@ const userSchema = new mongoose.Schema({
   appointments: { type: [String] },
   Candidates: { type: [String] },
   is_blocked : {type: Boolean},
+  is_company : {type: Boolean},
   is_paid : {type: Boolean}
 });
 

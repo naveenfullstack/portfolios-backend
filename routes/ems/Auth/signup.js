@@ -24,7 +24,7 @@ router.post("/", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create a new user with the encrypted password
-    const newUser = new User({ firstname, lastname, companyName, email, username, password: hashedPassword , is_blocked : false , is_paid : false , oldpassword : ""});
+    const newUser = new User({ firstname, lastname, companyName, email, username, password: hashedPassword , is_blocked : false , is_company : true , is_paid : false , oldpassword : ""});
     await newUser.save();
 
     // Generate a JWT token for the user
