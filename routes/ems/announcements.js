@@ -9,12 +9,21 @@ router.post("/add", async (req, res) => {
     const {
       title,
       description,
-      PublisherName,
+      PublisherFirstName,
+      PublisherLastName,
       Publisherid,
       PublisherPosition,
       PublisherDepartment,
       PublisherProfileImage,
     } = req.body;
+
+    // Check if both title and description are present
+    if (!title || !description) {
+      return res.status(400).json({
+        success: false,
+        error: "Both title and description are required",
+      });
+    }
 
     // Get the current date and time
     const currentDate = new Date();
@@ -23,12 +32,13 @@ router.post("/add", async (req, res) => {
     const newAnnouncement = new Announcement({
       title,
       description,
-      PublisherName,
+      PublisherFirstName,
+      PublisherLastName,
       Publisherid,
       PublisherPosition,
       PublisherDepartment,
       PublisherProfileImage,
-      date : currentDate,
+      date: currentDate,
     });
     await newAnnouncement.save();
 
@@ -37,12 +47,13 @@ router.post("/add", async (req, res) => {
       message: "Announcement created successfully",
       title,
       description,
-      PublisherName,
+      PublisherFirstName,
+      PublisherLastName,
       Publisherid,
       PublisherPosition,
       PublisherDepartment,
       PublisherProfileImage,
-      date : currentDate,
+      date: currentDate,
     });
   } catch (error) {
     console.error("Error adding Announcement:", error);
