@@ -1,17 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const Multer = require("multer");
-const firebase = require("firebase-admin");
-const serviceAccount = require("../../../firebase/firebase-admin-key.json");
 const User = require("../../../models/ems/user");
-
 const upload = Multer({ storage: Multer.memoryStorage() });
-
-// Initialize Firebase Admin SDK
-firebase.initializeApp({
-  credential: firebase.credential.cert(serviceAccount),
-  storageBucket: "portfolios-62a43.appspot.com",
-});
+const admin = require("../../../firebase/firebase");
 
 router.post("/upload/:email", upload.single("file"), async (req, res, next) => {
   if (!req.file) {
@@ -20,7 +12,7 @@ router.post("/upload/:email", upload.single("file"), async (req, res, next) => {
 
   const file = req.file;
   const { email } = req.params;
-  const bucket = firebase.storage().bucket();
+  const bucket = admin.storage().bucket(); 
 
   // Create a unique file name (e.g., use the original file name)
   const fileName = `${Date.now()}_${file.originalname}`;

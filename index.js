@@ -38,6 +38,9 @@ app.use('/mediax', MediaX) , Headers;
 const Portfolio = require('./routes/portfolio/index');
 app.use('/portfolio', Portfolio) , Headers;
 
+const Booking = require('./routes/booking/index');
+app.use('/booking', Booking) , Headers;
+
 // connection
 const port = process.env.PORT || 9001;
 app.listen(port, () => console.log(`Listening to port ${port}`));
