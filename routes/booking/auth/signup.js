@@ -6,18 +6,12 @@ const User = require("../../../models/booking/user");
 
 router.post("/", async (req, res) => {
   try {
-    const { firstname, lastname, username, email, password } = req.body;
+    const { firstname, lastname, email, password } = req.body;
 
     // Check if the email is already taken
     const existingEmail = await User.findOne({ email });
     if (existingEmail) {
-      return res.status(409).json({ error: "email already exists" });
-    }
-
-    // Check if the username is already taken
-    const existingUsername = await User.findOne({ username });
-    if (existingUsername) {
-      return res.status(409).json({ error: "Username already exists" });
+      return res.status(409).json({ error: "Email already exists" });
     }
 
     // Generate hashed password
@@ -28,7 +22,6 @@ router.post("/", async (req, res) => {
       firstname,
       lastname,
       email,
-      username,
       password: hashedPassword,
       is_blocked: false,
       oldpassword: "",
@@ -60,7 +53,6 @@ router.post("/", async (req, res) => {
       message: "Account created successfully",
       firstname,
       lastname,
-      username,
       email,
     });
   } catch (error) {

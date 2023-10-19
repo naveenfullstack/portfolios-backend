@@ -61,12 +61,16 @@ router.post("/", async (req, res, next) => {
       }
     );
 
+
     res.status(200).json({
       success: "true",
       message: "Login Success",
       email,
+      firstname : user.firstname,
+      lastname: user.lastname,
       accessToken,
       refreshToken,
+      profileImage: user.profileImage,
     });
 
     next();
