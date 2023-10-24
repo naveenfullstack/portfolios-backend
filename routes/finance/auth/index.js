@@ -15,5 +15,8 @@ router.use('/profileimage', UploadImage);
 const Balance = require('./balance');
 router.use('/balance', Balance);
 
+const UserDetails = require('./userdetails');
+router.use('/userdetails', UserDetails);
+
 
 module.exports = router;

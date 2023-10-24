@@ -70,8 +70,12 @@ router.post("/", async (req, res, next) => {
       .status(200)
       .json({
         success: "true",
-        id : user._id,
         message: "Login Success",
+        id : user._id,
+        firstname : user.firstname,
+        lastname : user.lastname,
+        username : user.username,
+        currency : user.currency,
         email,
         balance : user.balance,
         accessToken,
