@@ -5,6 +5,9 @@ const router = express.Router();
 const Auth = require('./auth/index');
 router.use('/auth', Auth);
 
+const Auto = require('./auto/index');
+router.use('/auto', Auto);
+
 const Category = require('./categories');
 router.use('/category', Category);
 
