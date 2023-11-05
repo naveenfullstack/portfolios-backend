@@ -24,7 +24,7 @@ cron.schedule("59 23 * * *", async () => {
     );
   }
 
-  console.log("Daily update completed at 8:00 PM");
+  console.log("Daily update completed at 11:59 PM");
 });
 
 // Schedule a task to run every Sunday at 11:59 PM

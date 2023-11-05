@@ -6,7 +6,8 @@ const User = require("../../../models/finance/user");
 
 router.post("/", async (req, res) => {
   try {
-    const { firstname, lastname, username, currency, email, password } = req.body;
+    const { firstname, lastname, username, currency, email, password } =
+      req.body;
 
     // Check if the email is already taken
     const existingEmail = await User.findOne({ email });
@@ -51,13 +52,16 @@ router.post("/", async (req, res) => {
     const token = jwt.sign({ userId: newUser._id }, process.env.SECRET_KEY);
 
     res.status(200).json({
-      token,
-      success: "true",
+      accessToken: token,
+      success: true,
       message: "Account created successfully",
+      id: newUser._id,
       firstname,
       lastname,
       username,
       email,
+      currency,
+      balance: newUser.balance,
     });
   } catch (error) {
     console.error("Error signing up:", error);

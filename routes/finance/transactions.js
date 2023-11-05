@@ -39,27 +39,58 @@ router.post("/add", async (req, res) => {
       is_income,
     });
 
-    if (is_income) {
-      // Update the User's income
-      user.thisWeekIncome =
-        (parseFloat(user.thisWeekIncome) || 0) + parseFloat(amount);
-      user.thisMonthIncome =
-        (parseFloat(user.thisMonthIncome) || 0) + parseFloat(amount);
-      user.balance = (parseFloat(user.balance) || 0) + parseFloat(amount);
-    } else {
-      // Update the User's Expenses
-      user.todayExpenses =
-        (parseFloat(user.todayExpenses) || 0) + parseFloat(amount);
-      user.thisWeekExpenses =
-        (parseFloat(user.thisWeekExpenses) || 0) + parseFloat(amount);
-      user.thisMonthExpenses =
-        (parseFloat(user.thisMonthExpenses) || 0) + parseFloat(amount);
-      user.balance = (parseFloat(user.balance) || 0) - parseFloat(amount);
+    // Calculate the current date and various dates in the past
+    const currentDate = new Date();
+
+    const oneMonthAgo = new Date(currentDate);
+    oneMonthAgo.setMonth(currentDate.getMonth() - 1);
+
+    const oneWeekAgo = new Date(currentDate);
+    oneWeekAgo.setDate(currentDate.getDate() - 7);
+
+    const oneDayAgo = new Date(currentDate);
+    oneDayAgo.setDate(currentDate.getDate() - 1);
+
+    // Convert amount to a valid number before using it
+    const parsedAmount = parseFloat(amount);
+
+    if (new Date(date) > oneMonthAgo) {
+      if (is_income) {
+        user.thisMonthIncome =
+          (parseFloat(user.thisMonthIncome) || 0) + parsedAmount;
+      } else {
+        user.thisMonthExpenses =
+          (parseFloat(user.thisMonthExpenses) || 0) + parsedAmount;
+      }
     }
 
-    // Update the Category's amount
+    if (new Date(date) > oneWeekAgo) {
+      if (is_income) {
+        user.thisWeekIncome =
+          (parseFloat(user.thisWeekIncome) || 0) + parsedAmount;
+      } else {
+        user.thisWeekExpenses =
+          (parseFloat(user.thisWeekExpenses) || 0) + parsedAmount;
+      }
+    }
+
+    if (new Date(date) > oneDayAgo) {
+      if (!is_income) {
+        user.todayExpenses =
+          (parseFloat(user.todayExpenses) || 0) + parsedAmount;
+      }
+    }
+
+    // Update user's balance separately
+    if (is_income) {
+      user.balance = (parseFloat(user.balance) || 0) + parsedAmount;
+    } else {
+      user.balance = (parseFloat(user.balance) || 0) - parsedAmount;
+    }
+
+    // Convert categoryToUpdate.amount to a valid number before using it
     categoryToUpdate.amount =
-      (parseFloat(categoryToUpdate.amount) || 0) + parseFloat(amount);
+      (parseFloat(categoryToUpdate.amount) || 0) + parsedAmount;
 
     await user.save();
     await newTransaction.save();
@@ -73,7 +104,7 @@ router.post("/add", async (req, res) => {
       title,
       date,
       category,
-      amount,
+      amount: parsedAmount, // Send the parsed amount
       is_income,
     });
   } catch (error) {
@@ -84,20 +115,20 @@ router.post("/add", async (req, res) => {
 
 // Route to get all transactions associated with a specific userId
 router.get("/get/:userId", async (req, res) => {
-    try {
-      const userId = req.params.userId;
-  
-      // Find all transactions for the specified userId
-      const transactions = await Transaction.find({ userId });
-  
-      res.status(200).json({
-        success: true,
-        transactions,
-      });
-    } catch (error) {
-      console.error("Error fetching transactions", error);
-      res.status(500).json({ error: "Internal server error" });
-    }
-  });
+  try {
+    const userId = req.params.userId;
+
+    // Find all transactions for the specified userId
+    const transactions = await Transaction.find({ userId });
+
+    res.status(200).json({
+      success: true,
+      transactions,
+    });
+  } catch (error) {
+    console.error("Error fetching transactions", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 module.exports = router;
